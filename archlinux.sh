@@ -1,7 +1,6 @@
 #!/usr/bin/bash
-read -p "Enter Admin Password: " adminpasswd
 echo "[LOG]: Creating admin user..."
-useradd -mG wheel admin && echo -e "$adminpasswd\n$adminpasswd" | passwd admin
+useradd -mG wheel admin && echo -e "admin123\nadmin123" | passwd admin
 echo -e "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers
 echo "[LOG]: Creating temporary mirror..."
 echo -e "## Worldwide\nServer = http://mirror.rackspace.com/archlinux/\$repo/os/\$arch\nServer = https://mirror.rackspace.com/archlinux/\$repo/os/\$arch" >/etc/pacman.d/mirrorlist
