@@ -12,7 +12,7 @@ pacman-key --refresh-keys
 pacman -Sy archlinux-keyring --noconfirm
 echo -e "\n"
 echo "[LOG]: Updating arch linux and installing base-devel"
-pacman -Syu --noconfirm && pacman -S base-devel git wget curl sudo --needed --noconfirm
+pacman -Syu --noconfirm && pacman -S base-devel git wget curl bash-completion sudo --needed --noconfirm
 echo -e "\n"
 echo "[LOG]: Installing ssh if needed..."
 echo -e "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers
