@@ -15,7 +15,7 @@ echo "[LOG]: Updating arch linux and installing base-devel"
 pacman -Syu --noconfirm && pacman -S base-devel git wget curl bash-completion sudo --needed --noconfirm
 echo -e "\n"
 echo "[LOG]: Installing ssh if needed..."
-echo -e "%wheel ALL=(ALL:ALL)" >>/etc/sudoers
+echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
 pacman -S openssh --needed && systemctl enable --now sshd
 echo "[LOG]: Downloading yay..."
 wget https://github.com/Jguer/yay/releases/download/v11.2.0/yay_11.2.0_x86_64.tar.gz
