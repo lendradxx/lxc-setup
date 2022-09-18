@@ -11,7 +11,7 @@ sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-releas
 echo "[LOG]: Adding admin user..."
 useradd -mG wheel admin && echo -e "admin123\nadmin123" | passwd admin
 echo "[LOG]: Adding wheel groups to sudoers"
-echo -e "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers
+echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
 echo "[LOG]: Enabling ssh remote && firewall..."
 sudo systemctl enable --now sshd firewalld
 echo "[LOG]: Enabling firewall for server..."
