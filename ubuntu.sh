@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 echo "[LOG]: Creating backup for local repo..."
-echo -e "deb http://kartolo.sby.datautama.net.id/ubuntu/ jammy main restricted universe multiverse
-deb http://kartolo.sby.datautama.net.id/ubuntu/ jammy-updates main restricted universe multiverse
-deb http://kartolo.sby.datautama.net.id/ubuntu/ jammy-security main restricted universe multiverse" >/etc/apt/sources.list
+
+if [[ -f /etc/os-release ]]; then
+    source /etc/os-release
+fi
+
+echo -e "deb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME=jammy} main restricted universe multiverse
+deb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME=jammy}-updates main restricted universe multiverse
+deb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME=jammy}-security main restricted universe multiverse" >/etc/apt/sources.list
 echo "[LOG]: Creating admin user..."
 groupadd wheel
 useradd -mG wheel admin -s $(which bash) && echo -e "admin123\nadmin123" | passwd admin
