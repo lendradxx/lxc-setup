@@ -6,7 +6,7 @@ echo -e $DNF_CONFIG >/etc/dnf/dnf.conf
 echo "[LOG]: Updating and installing missing tools..."
 dnf update -y && dnf install ncurses bash-completion sudo -y
 echo "[LOG]: Enabling rpm fusion..."
-sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
 sudo dnf groupupdate core -y && sudo dnf install openssh-server -y
 echo "[LOG]: Adding admin user..."
 useradd -mG wheel admin && echo -e "admin123\nadmin123" | passwd admin
