@@ -4,6 +4,12 @@
 curl -L https://bit.ly/3oVBDWj | bash -
 ```
 
+> Fedora
+
+```bash
+curl -L https://bit.ly/3fkI8Al | bash -
+```
+
 > Debian
 
 ```bash
