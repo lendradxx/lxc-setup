@@ -3,8 +3,8 @@ read -p "Enter Username (Default: user): " USERNAME
 read -p "Enter Password (Default: pass123): " PASSWORD
 
 if [[ ! $USERNAME && ! $PASSWORD ]]; then
-    USERNAME="user"
-    PASSWORD="pass123"
+    USERNAME="admin"
+    PASSWORD="admin123"
 fi
 
 echo "[LOG]: Creating backup for local repo..."
