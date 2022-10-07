@@ -18,7 +18,7 @@ deb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME}-updates main 
 deb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME}-security main restricted universe multiverse" >/etc/apt/sources.list
 echo "[LOG]: Creating ssh user..."
 groupadd wheel
-useradd -mG wheel $USERNAME -s $(which bash) && echo -e "$PASSWORD\n$PASSWORD" | passwd admin
+useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
 echo "[LOG]: Updating user..."
 apt update && apt upgrade -y && apt install sudo openssh-server curl -y
 echo "[LOG]: Installing ssh if needed..."
