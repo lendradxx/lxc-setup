@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
-echo "[LOG]: Creating admin user..."
+
+read -p "Enter Username (Default: user): " USERNAME
+read -p "Enter Password (Default: pass123): " PASSWORD
+
+if [[ ! $USERNAME && ! $PASSWORD ]]; then
+    USERNAME="user"
+    PASSWORD="pass123"
+fi
+
+echo "[LOG]: Creating ssh user..."
 groupadd wheel
-useradd -mG wheel admin -s $(which bash) && echo -e "admin123\nadmin123" | passwd admin
+useradd -mG wheel $USERNAME -s $(which bash) && echo -e "$PASSWORD\n$PASSWORD" | passwd admin
 echo "[LOG]: Updating user..."
 apt update && apt upgrade -y && apt install sudo openssh-server curl -y
 echo "[LOG]: Installing ssh if needed..."

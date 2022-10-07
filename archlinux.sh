@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 
-echo "[LOG]: Creating admin user..."
-useradd -mG wheel admin && echo -e "admin123\nadmin123" | passwd admin
+read -p "Enter Username (Default: user): " USERNAME
+read -p "Enter Password (Default: pass123): " PASSWORD
+
+if [[ ! $USERNAME && ! $PASSWORD ]]; then
+    USERNAME="user"
+    PASSWORD="pass123"
+fi
+
+echo "[LOG]: Creating ssh user..."
+useradd -mG wheel $USERNAME -s $(which bash) && echo -e "$PASSWORD\n$PASSWORD" | passwd admin
 echo "[LOG]: Creating temporary mirror..."
 echo -e "## Worldwide\nServer = http://mirror.rackspace.com/archlinux/\$repo/os/\$arch\nServer = https://mirror.rackspace.com/archlinux/\$repo/os/\$arch" >/etc/pacman.d/mirrorlist
 echo "[LOG]: Updating keyring..."
