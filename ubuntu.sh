@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
-read -p "Enter Username (Default: user): " USERNAME
-read -p "Enter Password (Default: pass123): " PASSWORD
 
-if [[ ! $USERNAME && ! $PASSWORD ]]; then
-    USERNAME="admin"
-    PASSWORD="admin123"
-fi
+USERNAME="admin"
+PASSWORD="admin123"
 
 echo "[LOG]: Creating backup for local repo..."
 
