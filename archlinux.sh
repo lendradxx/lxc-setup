@@ -32,3 +32,4 @@ echo "[LOG]: Updating mirrors..."
 rate-mirrors --allow-root --save /etc/pacman.d/mirrorlist arch
 echo "[LOG]: Deleting temp yay"
 rm -rf --verbose $HOME/yay_11.2.0_x86_64
+rm --verbose $HOME/yay_11.2.0_x86_64.tar.gz
