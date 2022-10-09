@@ -14,7 +14,7 @@ echo "[LOG]: Enabling rpm fusion..."
 sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
 sudo dnf groupupdate core -y && sudo dnf install openssh-server -y
 echo "[LOG]: Creating ssh user..."
-useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
+useradd -mG wheel $USERNAME && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
 echo "[LOG]: Adding wheel groups to sudoers"
 echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
 echo "[LOG]: Enabling ssh remote && firewall..."
