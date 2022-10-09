@@ -4,9 +4,9 @@ USERNAME="admin"
 PASSWORD="admin123"
 
 echo "[LOG]: Creating ssh user..."
-useradd -mG wheel "$USERNAME" -s /usr/bin/bash && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
+useradd -mG wheel $USERNAME && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
 echo "[LOG]: Creating temporary mirror..."
-echo -e "## Worldwide\nServer = http://mirror.rackspace.com/archlinux/\$repo/os/\$arch\nServer = https://mirror.rackspace.com/archlinux/\$repo/os/\$arch" >/etc/pacman.d/mirrorlist
+echo -e " ## Worldwide\nServer = http://mirror.rackspace.com/archlinux/\$repo/os/\$arch\nServer = https://mirror.rackspace.com/archlinux/\$repo/os/\$arch" >/etc/pacman.d/mirrorlist
 echo "[LOG]: Updating keyring..."
 rm -rf /etc/pacman.d/gnupg
 pacman-key --init
