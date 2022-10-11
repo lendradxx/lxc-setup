@@ -28,7 +28,7 @@ if [[ $ANSWER == "y" || $ANSWER == "Y" || $ANSWER == "yes" ]]; then
     echo "[LOG]: Installing docker with apt..."
     apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
     echo "[LOG]: Enabling and starting docker service..."
-    systemctl enable --now docker
+    systemctl enable --now docker.socket
 else
     echo "[ERR]: invalid or reject answer"
 fi
