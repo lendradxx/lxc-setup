@@ -170,7 +170,7 @@ function AlpineInstall() {
     apk add openssh-server
     echo "[LOG]: Enabling ssh server..."
     rc-update add sshd
-    service ssh start
+    service sshd start
 
     # Setup Docker
     read -p "Do you want to setup docker? (y/n): " ANSWER
