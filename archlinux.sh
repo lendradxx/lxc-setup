@@ -33,3 +33,15 @@ rate-mirrors --allow-root --save /etc/pacman.d/mirrorlist arch
 echo "[LOG]: Deleting temp yay"
 rm -rf --verbose $HOME/yay_11.2.0_x86_64
 rm --verbose $HOME/yay_11.2.0_x86_64.tar.gz
+
+# Setup Docker
+read -p "Do you want to setup docker? (y/n): " ANSWER
+if [[ $ANSWER == "y" || $ANSWER == "Y" || $ANSWER == "yes" ]]; then
+    # Installing Docker
+    echo "[LOG]: Installing docker..."
+    yay -S docker --noconfirm
+    echo "[LOG]: Enabling and starting docker service..."
+    systemctl enable --now docker
+else
+    echo "[ERR]: invalid or reject answer"
+fi

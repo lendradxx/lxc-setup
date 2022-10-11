@@ -21,3 +21,18 @@ echo "[LOG]: Enabling ssh remote && firewall..."
 sudo systemctl enable --now sshd && sudo systemctl enable --now firewalld
 echo "[LOG]: Enabling firewall for server..."
 sudo firewall-cmd --set-default-zone=FedoraServer
+
+# Setup Docker
+read -p "Do you want to setup docker? (y/n): " ANSWER
+if [[ $ANSWER == "y" || $ANSWER == "Y" || $ANSWER == "yes" ]]; then
+    echo "[LOG]: Installing dnf-plugins-core (required)..."
+    dnf -y install dnf-plugins-core
+    echo "[LOG]: Adding docker to dnf repo..."
+    dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+    echo "[LOG]: Installing docker with dnf..."
+    dnf install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    echo "[LOG]: Enabling and starting docker service..."
+    systemctl enable --now docker
+else
+    echo "[ERR]: invalid or reject answer"
+fi
