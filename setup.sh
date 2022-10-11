@@ -93,9 +93,7 @@ function ArchInstall() {
 
 function UbuntuInstall() {
     echo "[LOG]: Creating backup for local repo..."
-    echo -e "deb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME} main restricted universe multiverse
-deb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME}-updates main restricted universe multiverse
-deb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME}-security main restricted universe multiverse" >/etc/apt/sources.list
+    echo -e "deb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME} main restricted universe multiverse\ndeb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME}-updates main restricted universe multiverse\ndeb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME}-security main restricted universe multiverse" >/etc/apt/sources.list
     echo "[LOG]: Creating ssh user..."
     groupadd wheel
     useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
@@ -161,14 +159,9 @@ function DebianInstall() {
 
 function AlpineInstall() {
     echo "[LOG]: Updating system..."
-    apk update
     apk upgrade
-
     echo "[LOG]: Installing bash & sudo..."
     apk add bash sudo
-
-    USERNAME="admin"
-    PASSWORD="admin123"
 
     echo "[LOG]: Creating ssh user..."
     adduser $USERNAME -G wheel -s /bin/bash -SD && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
