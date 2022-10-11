@@ -212,4 +212,8 @@ case $ID in # Select methods install by distro ID
 "alpine")
     AlpineInstall
     ;;
+*)
+    echo "[LOG]: We don't support this distro yet"
+    echo "[LOG]: So please wait for us to create installer for this distro..."
+    ;;
 esac
