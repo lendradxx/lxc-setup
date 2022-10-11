@@ -6,7 +6,7 @@ fi
 
 # Variable
 USERNAME="admin"
-PASSWORD="adminpass123"
+PASSWORD="admin123"
 
 # Install methods
 
