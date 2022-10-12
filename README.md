@@ -9,5 +9,5 @@ wget https://bit.ly/lxc-setup && $SHELL lxc-setup
 > curl
 
 ```bash
-curl -sLI https://bit.ly/lxc-setup | $SHELL -
+curl -L https://bit.ly/lxc-setup | $SHELL -
 ```
