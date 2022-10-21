@@ -90,6 +90,7 @@ function ArchInstall() {
         echo "[ERR]: invalid or reject answer"
     fi
 }
+
 function UbuntuInstall() {
     echo "[LOG]: Creating backup for local repo..."
     echo -e "deb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME} main restricted universe multiverse\ndeb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME}-updates main restricted universe multiverse\ndeb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME}-security main restricted universe multiverse" >/etc/apt/sources.list
