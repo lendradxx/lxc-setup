@@ -93,7 +93,7 @@ function ArchInstall() {
 
 function UbuntuInstall() {
     echo "[LOG]: Creating backup for local repo..."
-    echo -e "deb http://mirror.telkomuniversity.ac.id/ubuntu/ ${UBUNTU_CODENAME} main restricted universe multiverse\ndeb http://mirror.telkomuniversity.ac.id/ubuntu/ ${UBUNTU_CODENAME}-updates main restricted universe multiverse\ndeb http://mirror.telkomuniversity.ac.id/ubuntu/ ${UBUNTU_CODENAME}-security main restricted universe multiverse" >/etc/apt/sources.list
+    echo -e "deb ftp://ftp.itb.ac.id/pub/ubuntu/ ${UBUNTU_CODENAME} main restricted universe multiverse\ndeb ftp://ftp.itb.ac.id/pub/ubuntu/ ${UBUNTU_CODENAME}-updates main restricted universe multiverse\ndeb ftp://ftp.itb.ac.id/pub/ubuntu/ ${UBUNTU_CODENAME}-security main restricted universe multiverse" >/etc/apt/sources.list
     echo "[LOG]: Creating ssh user..."
     groupadd wheel
     useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
