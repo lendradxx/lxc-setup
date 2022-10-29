@@ -3,11 +3,11 @@
 > wget
 
 ```bash
-wget https://bit.ly/lxc-setup && $SHELL lxc-setup
+wget http://gogs.com/lendra/lxc-setup/raw/main/setup.sh && $SHELL lxc-setup
 ```
 
 > curl
 
 ```bash
-curl -L https://bit.ly/lxc-setup | $SHELL -
+curl -L http://gogs.com/lendra/lxc-setup/raw/main/setup.sh | $SHELL -
 ```
