@@ -159,8 +159,8 @@ function DebianInstall() {
 
 function AlpineInstall() {
     echo "[LOG]: Disabling IPv6"
-    echo -e "# Force IPv6 off\nnet.ipv6.conf.all.disable_ipv6 = 1\nnet.ipv6.conf.default.disable_ipv6 = 1\nnet.ipv6.conf.lo.disable_ipv6 = 1\nnet.ipv6.conf.eth0.disable_ipv6 = 1" >/etc/sysctl.d/local.conf
-    sysctl -p /etc/sysctl.d/local.conf
+    echo -e "# Force IPv6 off\nnet.ipv6.conf.all.disable_ipv6 = 1\nnet.ipv6.conf.default.disable_ipv6 = 1\nnet.ipv6.conf.lo.disable_ipv6 = 1\nnet.ipv6.conf.eth0.disable_ipv6 = 1" >/etc/sysctl.conf
+    sysctl -p /etc/sysctl.conf
     echo "[LOG]: Updating system..."
     apk upgrade
     echo "[LOG]: Installing bash & sudo..."
