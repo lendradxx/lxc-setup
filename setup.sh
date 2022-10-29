@@ -184,6 +184,8 @@ function AlpineInstall() {
         echo "[LOG]: Enabling and starting docker service..."
         rc-update add docker
         service docker start
+        # Checking if Docker installed successfully
+        apk add docker
     else
         echo "[ERR]: invalid or reject answer"
     fi
