@@ -71,9 +71,6 @@ function FedoraInstall() {
     sudo systemctl enable --now sshd && sudo systemctl enable --now firewalld
     echo "[LOG]: Enabling firewall for server..."
     sudo firewall-cmd --set-default-zone=FedoraServer
-
-    # Install Docker
-    InstallDocker
 }
 
 function ArchInstall() {
@@ -107,9 +104,6 @@ function ArchInstall() {
     echo "[LOG]: Deleting temp yay"
     rm -rf --verbose $HOME/yay_11.2.0_x86_64
     rm --verbose $HOME/yay_11.2.0_x86_64.tar.gz
-
-    # Install Docker
-    InstallDocker
 }
 
 function UbuntuInstall() {
@@ -123,9 +117,6 @@ function UbuntuInstall() {
     echo "[LOG]: Installing ssh if needed..."
     echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
     systemctl enable --now ssh
-
-    # Install Docker
-    InstallDocker
 }
 
 function DebianInstall() {
@@ -138,8 +129,6 @@ function DebianInstall() {
     apt install sudo openssh-server curl -y
     echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
     systemctl enable --now ssh
-    # Install Docker
-    InstallDocker
 }
 
 function AlpineInstall() {
@@ -159,9 +148,6 @@ function AlpineInstall() {
     echo "[LOG]: Enabling ssh server..."
     rc-update add sshd
     service sshd start
-
-    # Install Docker
-    InstallDocker
 }
 
 function CentOSInstall() {
@@ -189,9 +175,8 @@ function CentOSInstall() {
     echo "[LOG]: Creating ssh user..."
     useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
     echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
-
-    # Install Docker
-    InstallDocker
+    echo "[LOG]: Enabling SSH Server"
+    systemctl enable --now sshd
 }
 
 echo "[LOG]: Checking Distro ID..."
