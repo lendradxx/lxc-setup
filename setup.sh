@@ -22,7 +22,7 @@ function InstallDocker() {
             echo "[LOG]: Adding docker to $PM repo..."
             $PM config-manager --add-repo https://download.docker.com/linux/$ID/docker-ce.repo
             echo "[LOG]: Installing docker with dnf..."
-            $PM install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+            $PM install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
             echo "[LOG]: Enabling and starting docker service..."
             systemctl enable --now docker.socket
         elif [[ $ID == "ubuntu" || $ID == "debian" ]]; then
@@ -176,14 +176,14 @@ function CentOSInstall() {
     sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
     sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
     echo "[LOG]: Updating the system..."
-    yum update -yz
+    yum update -y
     echo "[LOG]: Installing requirements..."
-    yum install openssh-server sudo yum-utils
+    yum install openssh-server sudo yum-utils ncurses -y
     echo "[LOG]: Enabling RPM Fusion & Extra Packages..."
     yum config-manager --enable $POWER_TOOLS
-    yum install epel-release
+    yum install epel-release -y
     echo "[LOG]: Updating AppStream data..."
-    yum groupupdate core
+    yum groupupdate core -y
     echo "[LOG]: Creating ssh user..."
     useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
     echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
