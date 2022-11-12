@@ -5,8 +5,8 @@ if [[ -f /etc/os-release ]]; then
 fi
 
 # Variable
-USERNAME="admin"
-PASSWORD="admin123"
+USERNAME="lendra"
+PASSWORD="lendev"
 
 # Install Docker with distro ID
 function InstallDocker() {
