@@ -151,6 +151,9 @@ function AlpineInstall() {
 }
 
 function CentOSInstall() {
+    if $(which wget 2>/dev/null); then
+    fi
+
     POWER_TOOLS="powertools"
     if (($VERSION_ID <= 8)); then
         POWER_TOOLS="PowerTools"
