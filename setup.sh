@@ -138,7 +138,7 @@ function DebianInstall() {
     apt install sudo openssh-server curl -y
     echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
     systemctl enable --now ssh
-    
+
     # Install Docker
     InstallDocker
 }
@@ -169,12 +169,12 @@ function CentOSInstall() {
     POWER_TOOLS="powertools"
     if [ $VERSION_ID -le 8 ]; then
         POWER_TOOLS="PowerTools"
+        echo "[LOG]: Fixing AppStream not Found..."
+        cd /etc/yum.repos.d/
+        sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+        sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
     fi
 
-    echo "[LOG]: Fixing AppStream not Found..."
-    cd /etc/yum.repos.d/
-    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
     echo "[LOG]: Updating the system..."
     yum update -y
     echo "[LOG]: Installing requirements..."
