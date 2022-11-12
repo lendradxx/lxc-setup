@@ -1,4 +1,5 @@
 # Automatic Installer by Distro ID
+Supported Distro: Arch, Fedora, Alpine, CentOS, Ubuntu, Debian
 
 > wget
 
