@@ -1,5 +1,9 @@
 # Automatic Installer by Distro ID
+<<<<<<< HEAD
 Supported Distro: Fedora, Debian, CentOS 8/9, Ubuntu, Arch, Alpine 
+=======
+Supported Distro: Arch, Fedora, Alpine, CentOS, Ubuntu, Debian
+>>>>>>> d81ca45a5158bacbc27560e893c55f0096674539
 
 > wget
 

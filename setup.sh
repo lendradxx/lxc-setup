@@ -138,7 +138,11 @@ function DebianInstall() {
     apt install sudo openssh-server curl -y
     echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
     systemctl enable --now ssh
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> d81ca45a5158bacbc27560e893c55f0096674539
     # Install Docker
     InstallDocker
 }
