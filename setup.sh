@@ -152,6 +152,11 @@ function AlpineInstall() {
 
 function CentOSInstall() {
     if $(which wget 2>/dev/null); then
+        wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
+        mv gai.conf /etc/
+    else
+        curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
+        mv gai.conf /etc/
     fi
 
     POWER_TOOLS="powertools"
