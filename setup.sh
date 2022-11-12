@@ -168,6 +168,9 @@ function CentOSInstall() {
     POWER_TOOLS="powertools"
     if [ $VERSION_ID -le 8 ]; then
         POWER_TOOLS="PowerTools"
+    fi
+
+    if [ $VERSION_ID -le 9 ]; then
         echo "[LOG]: Fixing AppStream not Found..."
         cd /etc/yum.repos.d/
         sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
