@@ -8,6 +8,47 @@ fi
 USERNAME="lendra"
 PASSWORD="lendev"
 
+# Install Docker with distro ID
+function InstallDocker() {
+    # Setup Docker
+    read -p "Do you want to setup docker? (y/n): " ANSWER
+    if [[ $ANSWER == "y" || $ANSWER == "Y" || $ANSWER == "yes" ]]; then
+        if [[ $ID == "fedora" || $ID == "centos" ]]; then
+            PM="dnf"
+            if [[ $ID == "centos" ]]; then
+                PM="yum"
+            fi
+
+            echo "[LOG]: Adding docker to $PM repo..."
+            $PM config-manager --add-repo https://download.docker.com/linux/$ID/docker-ce.repo
+            echo "[LOG]: Installing docker with dnf..."
+            $PM install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+            echo "[LOG]: Enabling and starting docker service..."
+            systemctl enable --now docker.socket
+        elif [[ $ID == "ubuntu" || $ID == "debian" ]]; then
+            echo "[LOG]: setup docker..."
+            echo "[LOG]: Enabling https support for apt..."
+            apt install ca-certificates curl gnupg lsb-release -y
+            echo "[LOG]: Adding docker keyring..."
+            mkdir -p /etc/apt/keyrings
+            curl -fsSL https://download.docker.com/linux/$ID/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+            echo "[LOG]: Adding docker to apt repo..."
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/$ID $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+            echo "[LOG]: Updating apt repo..."
+            apt update
+            echo "[LOG]: Installing docker with apt..."
+            apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+            echo "[LOG]: Enabling and starting docker service..."
+            systemctl enable --now docker.sockets
+        else
+            echo "[LOG]: Unsupported Distro Linux"
+        fi
+    else
+        echo "[ERR]: invalid or reject answer"
+    fi
+
+}
+
 # Install methods
 
 function FedoraInstall() {
@@ -17,7 +58,8 @@ function FedoraInstall() {
     DNF_CONFIG="[main]\ngpgcheck=1\ninstallonly_limit=2\nclean_requirements_on_remove=True\nbest=True\nskip_if_unavailable=True\ndeltarpm=True\nmax_parallel_downloads=20\ndefaultyes=True\ninstall_weak_deps=False"
     echo -e $DNF_CONFIG >/etc/dnf/dnf.conf
     echo "[LOG]: Updating and installing missing tools..."
-    dnf update -y && dnf install ncurses bash-completion sudo -y
+    dnf update -y && dnf install ncurses bash-completion sudo dnf-plugins-core -y
+    echo "[LOG]: Installing dnf-plugins-core (required)..."
     echo "[LOG]: Enabling rpm fusion..."
     sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
     sudo dnf groupupdate core -y && sudo dnf install openssh-server -y
@@ -30,20 +72,8 @@ function FedoraInstall() {
     echo "[LOG]: Enabling firewall for server..."
     sudo firewall-cmd --set-default-zone=FedoraServer
 
-    # Setup Docker
-    read -p "Do you want to setup docker? (y/n): " ANSWER
-    if [[ $ANSWER == "y" || $ANSWER == "Y" || $ANSWER == "yes" ]]; then
-        echo "[LOG]: Installing dnf-plugins-core (required)..."
-        dnf -y install dnf-plugins-core
-        echo "[LOG]: Adding docker to dnf repo..."
-        dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-        echo "[LOG]: Installing docker with dnf..."
-        dnf install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-        echo "[LOG]: Enabling and starting docker service..."
-        systemctl enable --now docker.socket
-    else
-        echo "[ERR]: invalid or reject answer"
-    fi
+    # Install Docker
+    InstallDocker
 }
 
 function ArchInstall() {
@@ -78,17 +108,8 @@ function ArchInstall() {
     rm -rf --verbose $HOME/yay_11.2.0_x86_64
     rm --verbose $HOME/yay_11.2.0_x86_64.tar.gz
 
-    # Setup Docker
-    read -p "Do you want to setup docker? (y/n): " ANSWER
-    if [[ $ANSWER == "y" || $ANSWER == "Y" || $ANSWER == "yes" ]]; then
-        # Installing Docker
-        echo "[LOG]: Installing docker..."
-        yay -S docker --noconfirm
-        echo "[LOG]: Enabling and starting docker service..."
-        systemctl enable --now docker.socket
-    else
-        echo "[ERR]: invalid or reject answer"
-    fi
+    # Install Docker
+    InstallDocker
 }
 
 function UbuntuInstall() {
@@ -103,26 +124,8 @@ function UbuntuInstall() {
     echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
     systemctl enable --now ssh
 
-    # Setup Docker
-    read -p "Do you want to setup docker? (y/n): " ANSWER
-    if [[ $ANSWER == "y" || $ANSWER == "Y" || $ANSWER == "yes" ]]; then
-        echo "[LOG]: setup docker..."
-        echo "[LOG]: Enabling https support for apt..."
-        apt install ca-certificates curl gnupg lsb-release -y
-        echo "[LOG]: Adding docker keyring..."
-        mkdir -p /etc/apt/keyrings
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-        echo "[LOG]: Adding docker to apt repo..."
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
-        echo "[LOG]: Updating apt repo..."
-        apt update
-        echo "[LOG]: Installing docker with apt..."
-        apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
-        echo "[LOG]: Enabling and starting docker service..."
-        systemctl enable --now docker.socket
-    else
-        echo "[ERR]: invalid or reject answer"
-    fi
+    # Install Docker
+    InstallDocker
 }
 
 function DebianInstall() {
@@ -130,31 +133,14 @@ function DebianInstall() {
     groupadd wheel
     useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
     echo "[LOG]: Updating system..."
-    apt update && apt upgrade -y && apt install sudo openssh-server curl -y
+    apt update && apt upgrade -y
     echo "[LOG]: Installing ssh if needed..."
+    apt install sudo openssh-server curl -y
     echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
     systemctl enable --now ssh
-
-    # Setup Docker
-    read -p "Do you want to setup docker? (y/n): " ANSWER
-    if [[ $ANSWER == "y" || $ANSWER == "Y" || $ANSWER == "yes" ]]; then
-        echo "[LOG]: setup docker..."
-        echo "[LOG]: Enabling https support for apt..."
-        apt install ca-certificates curl gnupg lsb-release -y
-        echo "[LOG]: Adding docker keyring..."
-        mkdir -p /etc/apt/keyrings
-        curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-        echo "[LOG]: Adding docker to apt repo..."
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
-        echo "[LOG]: Updating apt repo..."
-        apt update
-        echo "[LOG]: Installing docker with apt..."
-        apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
-        echo "[LOG]: Enabling and starting docker service..."
-        systemctl enable --now docker.socket
-    else
-        echo "[ERR]: invalid or reject answer"
-    fi
+    
+    # Install Docker
+    InstallDocker
 }
 
 function AlpineInstall() {
@@ -175,20 +161,35 @@ function AlpineInstall() {
     rc-update add sshd
     service sshd start
 
-    # Setup Docker
-    read -p "Do you want to setup docker? (y/n): " ANSWER
-    if [[ $ANSWER == "y" || $ANSWER == "Y" || $ANSWER == "yes" ]]; then
-        # Installing Docker
-        echo "[LOG]: Installing docker..."
-        apk add docker
-        echo "[LOG]: Enabling and starting docker service..."
-        rc-update add docker
-        service docker start
-        # Checking if Docker installed successfully
-        apk add docker
-    else
-        echo "[ERR]: invalid or reject answer"
+    # Install Docker
+    InstallDocker
+}
+
+function CentOSInstall() {
+    POWER_TOOLS="powertools"
+    if [ $VERSION_ID -le 8 ]; then
+        POWER_TOOLS="PowerTools"
     fi
+
+    echo "[LOG]: Fixing AppStream not Found..."
+    cd /etc/yum.repos.d/
+    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+    echo "[LOG]: Updating the system..."
+    yum update -y
+    echo "[LOG]: Installing requirements..."
+    yum install openssh-server sudo yum-utils ncurses -y
+    echo "[LOG]: Enabling RPM Fusion & Extra Packages..."
+    yum config-manager --enable $POWER_TOOLS
+    yum install epel-release -y
+    echo "[LOG]: Updating AppStream data..."
+    yum groupupdate core -y
+    echo "[LOG]: Creating ssh user..."
+    useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
+    echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
+
+    # Install Docker
+    InstallDocker
 }
 
 echo "[LOG]: Checking Distro ID..."
@@ -209,6 +210,9 @@ case $ID in # Select methods install by distro ID
     ;;
 "alpine")
     AlpineInstall
+    ;;
+"centos")
+    CentOSInstall
     ;;
 *)
     echo "[LOG]: We don't support this distro yet"
