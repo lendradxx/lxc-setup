@@ -152,15 +152,16 @@ function AlpineInstall() {
 
 function CentOSInstall() {
     POWER_TOOLS="powertools"
-    if [ $VERSION_ID -le 8 ]; then
+    if [ $($VERSION_ID <= 8) ]; then
         POWER_TOOLS="PowerTools"
     fi
 
-    if [ $VERSION_ID -le 9 ]; then
+    if [ $($VERSION_ID >= 8) ]; then
         echo "[LOG]: Fixing AppStream not Found..."
         cd /etc/yum.repos.d/
         sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
         sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+        cd ~
     fi
 
     echo "[LOG]: Updating the system..."
