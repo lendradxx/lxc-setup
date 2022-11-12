@@ -141,7 +141,7 @@ function AlpineInstall() {
     apk add bash sudo
 
     echo "[LOG]: Creating ssh user..."
-    adduser $USERNAME -G wheel -s /bin/bash -SD && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
+    adduser $USERNAME -G wheel -s $(which bash 2>/dev/null) -SD && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
     echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
     echo "[LOG]: Installing openssh server..."
     apk add openssh-server
