@@ -53,14 +53,9 @@ function InstallDocker() {
 
 function FedoraInstall() {
     echo "[LOG]: Prefering IPv4 instead of IPv6"
-    if $(which wget 2>/dev/null); then
-        wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-        mv gai.conf /etc/
-    else
-        curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-        mv gai.conf /etc/
-    fi
-    
+    wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
+    mv gai.conf /etc/
+
     echo "[LOG]: Creating backup for dnf config"
     mv /etc/dnf/dnf.conf /etc/dnf/dnf.conf.bck
     echo "[LOG]: Generating new dnf config file..."
@@ -84,13 +79,8 @@ function FedoraInstall() {
 
 function ArchInstall() {
     echo "[LOG]: Prefering IPv4 instead of IPv6"
-    if $(which wget 2>/dev/null); then
-        wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-        mv gai.conf /etc/
-    else
-        curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-        mv gai.conf /etc/
-    fi
+    wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
+    mv gai.conf /etc/
 
     echo "[LOG]: Creating ssh user..."
     useradd -mG wheel $USERNAME && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
@@ -126,13 +116,8 @@ function ArchInstall() {
 
 function UbuntuInstall() {
     echo "[LOG]: Prefering IPv4 instead of IPv6"
-    if $(which wget 2>/dev/null); then
-        wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-        mv gai.conf /etc/
-    else
-        curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-        mv gai.conf /etc/
-    fi
+    wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
+    mv gai.conf /etc/
 
     echo "[LOG]: Creating backup for local repo..."
     echo -e "deb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME} main restricted universe multiverse\ndeb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME}-updates main restricted universe multiverse\ndeb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME}-security main restricted universe multiverse" >/etc/apt/sources.list
@@ -188,13 +173,8 @@ function AlpineInstall() {
 
 function CentOSInstall() {
     echo "[LOG]: Prefering IPv4 instead of IPv6"
-    if $(which wget 2>/dev/null); then
-        wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-        mv gai.conf /etc/
-    else
-        curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-        mv gai.conf /etc/
-    fi
+    wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
+    mv gai.conf /etc/
 
     POWER_TOOLS="powertools"
     if (($VERSION_ID <= 8)); then
