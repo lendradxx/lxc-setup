@@ -133,13 +133,8 @@ function UbuntuInstall() {
 
 function DebianInstall() {
     echo "[LOG]: Prefering IPv4 instead of IPv6"
-    if $(which wget 2>/dev/null); then
-        wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-        mv gai.conf /etc/
-    else
-        curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-        mv gai.conf /etc/
-    fi
+    wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
+    mv gai.conf /etc/
 
     echo "[LOG]: Creating ssh user..."
     groupadd wheel
