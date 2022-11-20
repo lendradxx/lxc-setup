@@ -8,6 +8,15 @@ fi
 USERNAME="lendra"
 PASSWORD="lendev"
 
+# Function
+function CreateLoginUser {
+    echo "[LOG]: Creating ssh user..."
+    groupadd wheel
+    useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
+    echo "[LOG]: Adding wheel groups to sudoers"
+    echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
+}
+
 # Install Docker with distro ID
 function InstallDocker() {
     # Setup Docker
@@ -67,10 +76,7 @@ function FedoraInstall() {
     echo "[LOG]: Enabling rpm fusion..."
     sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
     sudo dnf groupupdate core -y && sudo dnf install openssh-server -y
-    echo "[LOG]: Creating ssh user..."
-    useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
-    echo "[LOG]: Adding wheel groups to sudoers"
-    echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
+    CreateLoginUser
     echo "[LOG]: Enabling ssh remote && firewall..."
     sudo systemctl enable --now sshd && sudo systemctl enable --now firewalld
     echo "[LOG]: Enabling firewall for server..."
@@ -193,10 +199,25 @@ function CentOSInstall() {
     yum install epel-release -y
     echo "[LOG]: Updating AppStream data..."
     yum groupupdate core -y
-    echo "[LOG]: Creating ssh user..."
-    useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
-    echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
+    CreateLoginUser
     echo "[LOG]: Enabling SSH Server"
+    systemctl enable --now sshd
+}
+
+function SUSELeapInstall() {
+    echo "[LOG]: Disabling SLE and Backports mirror..."
+    zypper mr -d repo-sle-update repo-backports-update
+    echo "[LOG]: Updating and installing missing tools..."
+    zypper -vn update -y && zypper install bash-completion sudo curl wget
+
+    echo "[LOG]: Prefering IPv4 instead of IPv6"
+    wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
+    mv gai.conf /etc/
+
+    CreateLoginUser
+    echo "[LOG]: Installing SSH Server..."
+    zypper -vn install openssh-server
+    echo "[LOG]: Enabling ssh remote..."
     systemctl enable --now sshd
 }
 
@@ -221,6 +242,9 @@ case $ID in # Select methods install by distro ID
     ;;
 "centos")
     CentOSInstall
+    ;;
+"opensuse-leap")
+    SUSELeapInstall
     ;;
 *)
     echo "[LOG]: We don't support this distro yet"
