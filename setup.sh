@@ -228,7 +228,7 @@ function AlmaLinuxInstall() {
     yum update -y && yum install bash-completion sudo -y
     CreateLoginUser
     echo "[LOG]: Installing SSH Server..."
-    yum install install openssh-server
+    yum install openssh-server -y
     echo "[LOG]: Enabling ssh remote..."
     systemctl enable --now sshd
 }
