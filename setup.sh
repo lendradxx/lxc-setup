@@ -208,7 +208,7 @@ function SUSELeapInstall() {
     echo "[LOG]: Disabling SLE and Backports mirror..."
     zypper mr -d repo-sle-update repo-backports-update
     echo "[LOG]: Updating and installing missing tools..."
-    zypper -vn update -y && zypper install bash-completion sudo curl wget
+    zypper -vn update -y && zypper -vn install bash-completion sudo curl wget
 
     echo "[LOG]: Prefering IPv4 instead of IPv6"
     wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
