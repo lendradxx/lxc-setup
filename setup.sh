@@ -177,28 +177,26 @@ function CentOSInstall() {
     wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
     mv gai.conf /etc/
 
-    POWER_TOOLS="powertools"
-    if (($VERSION_ID <= 8)); then
-        POWER_TOOLS="PowerTools"
-    fi
-
     if (($VERSION_ID >= 8)); then
-        echo "[LOG]: Fixing AppStream not Found..."
-        cd /etc/yum.repos.d/
-        sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-        sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-        cd ~
+        if [[ "$PRETTY_NAME" =~ .*"Stream".* ]]; then
+            echo "[LOG]: Using Distro CentOS Stream..."
+        else
+            echo "[LOG]: Fixing AppStream not Found..."
+            cd /etc/yum.repos.d/
+            sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+            sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+            cd ~
+        fi
     fi
 
     echo "[LOG]: Updating the system..."
     yum update -y
     echo "[LOG]: Installing requirements..."
     yum install openssh-server sudo yum-utils ncurses -y
-    echo "[LOG]: Enabling RPM Fusion & Extra Packages..."
-    yum config-manager --enable $POWER_TOOLS
+    echo "[LOG]: Enabling Extra Packages..."
     yum install epel-release -y
-    echo "[LOG]: Updating AppStream data..."
-    yum groupupdate core -y
+    echo "[LOG]: Updating system again..."
+    yum update -y
     CreateLoginUser
     echo "[LOG]: Enabling SSH Server"
     systemctl enable --now sshd
@@ -217,6 +215,20 @@ function SUSELeapInstall() {
     CreateLoginUser
     echo "[LOG]: Installing SSH Server..."
     zypper -vn install openssh-server
+    echo "[LOG]: Enabling ssh remote..."
+    systemctl enable --now sshd
+}
+
+function AlmaLinuxInstall() {
+    echo "[LOG]: Prefering IPv4 instead of IPv6"
+    wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
+    mv gai.conf /etc/
+
+    echo "[LOG]: Updating and installing missing tools..."
+    yum update -y && yum install bash-completion sudo -y
+    CreateLoginUser
+    echo "[LOG]: Installing SSH Server..."
+    yum install install openssh-server
     echo "[LOG]: Enabling ssh remote..."
     systemctl enable --now sshd
 }
@@ -242,6 +254,9 @@ case $ID in # Select methods install by distro ID
     ;;
 "centos")
     CentOSInstall
+    ;;
+"almalinux")
+    AlmaLinuxInstall
     ;;
 "opensuse-leap")
     SUSELeapInstall
