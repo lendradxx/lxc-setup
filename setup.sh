@@ -68,7 +68,7 @@ function FedoraInstall() {
     echo "[LOG]: Creating backup for dnf config"
     mv /etc/dnf/dnf.conf /etc/dnf/dnf.conf.bck
     echo "[LOG]: Generating new dnf config file..."
-    DNF_CONFIG="[main]\ngpgcheck=1\ninstallonly_limit=2\nclean_requirements_on_remove=True\nbest=True\nskip_if_unavailable=True\ndeltarpm=True\nmax_parallel_downloads=20\ndefaultyes=True\ninstall_weak_deps=False"
+    DNF_CONFIG="[main]\ngpgcheck=1\ninstallonly_limit=2\nclean_requirements_on_remove=True\nbest=True\nskip_if_unavailable=True\ndeltarpm=True\nmax_parallel_downloads=10\fastestmirror=True\ndefaultyes=True\ninstall_weak_deps=False"
     echo -e $DNF_CONFIG >/etc/dnf/dnf.conf
     echo "[LOG]: Updating and installing missing tools..."
     dnf update -y && dnf install ncurses bash-completion sudo dnf-plugins-core -y
