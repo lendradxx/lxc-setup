@@ -71,7 +71,7 @@ function FedoraInstall() {
     wget http://gogs.com/lendra/lxc-setup/raw/main/dnf.conf || curl -o dnf.conf http://gogs.com/lendra/lxc-setup/raw/main/dnf.conf
     mv dnf.conf /etc/dnf/
     echo "[LOG]: Updating and installing missing tools..."
-    dnf -v update -y && dnf -v install ncurses bash-completion sudo dnf-plugins-core -y
+    dnf update -y && dnf install ncurses bash-completion sudo dnf-plugins-core -y
     echo "[LOG]: Installing dnf-plugins-core (required)..."
     echo "[LOG]: Enabling rpm fusion..."
     sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
