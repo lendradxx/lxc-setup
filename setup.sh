@@ -64,6 +64,10 @@ function FedoraInstall() {
     echo "[LOG]: Prefering IPv4 instead of IPv6"
     wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
     mv gai.conf /etc/
+    cd /etc/yum.repos.d/
+    sed -i 's|baseurl=https://muug.ca|#baseurl=https://muug.ca|g' /etc/yum.repos.d/fedora*
+    sed -i 's|#metalink=https://mirrors.fedoraproject.org|metalink=https://mirrors.fedoraproject.org|g' /etc/yum.repos.d/fedora*
+    cd ~
 
     echo "[LOG]: Creating backup for dnf config"
     mv /etc/dnf/dnf.conf /etc/dnf/dnf.conf.bck
@@ -71,7 +75,7 @@ function FedoraInstall() {
     wget http://gogs.com/lendra/lxc-setup/raw/main/dnf.conf || curl -o dnf.conf http://gogs.com/lendra/lxc-setup/raw/main/dnf.conf
     mv dnf.conf /etc/dnf/
     echo "[LOG]: Updating and installing missing tools..."
-    dnf update -y && dnf install ncurses bash-completion sudo dnf-plugins-core -y
+    dnf -v update -y && dnf -v install ncurses bash-completion sudo dnf-plugins-core -y
     echo "[LOG]: Installing dnf-plugins-core (required)..."
     echo "[LOG]: Enabling rpm fusion..."
     sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
