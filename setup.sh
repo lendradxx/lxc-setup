@@ -68,13 +68,13 @@ function FedoraInstall() {
     echo "[LOG]: Creating backup for dnf config"
     mv /etc/dnf/dnf.conf /etc/dnf/dnf.conf.bck
     echo "[LOG]: Generating new dnf config file..."
-    DNF_CONFIG="[main]\ngpgcheck=1\ninstallonly_limit=2\nclean_requirements_on_remove=True\nbest=True\nskip_if_unavailable=True\ndeltarpm=True\nmax_parallel_downloads=10\ndefaultyes=True\ninstall_weak_deps=False"
-    echo -e $DNF_CONFIG >/etc/dnf/dnf.conf
+    wget http://gogs.com/lendra/lxc-setup/raw/main/dnf.conf || curl -o dnf.conf http://gogs.com/lendra/lxc-setup/raw/main/dnf.conf
+    mv dnf.conf /etc/dnf/
     echo "[LOG]: Updating and installing missing tools..."
-    dnf update -y && dnf install ncurses bash-completion sudo dnf-plugins-core -y
+    dnf -v update -y && dnf -v install ncurses bash-completion sudo dnf-plugins-core -y
     echo "[LOG]: Installing dnf-plugins-core (required)..."
     echo "[LOG]: Enabling rpm fusion..."
-    sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
+    sudo dnf -v install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
     sudo dnf groupupdate core -y && sudo dnf install openssh-server -y
     CreateLoginUser
     echo "[LOG]: Enabling ssh remote && firewall..."
