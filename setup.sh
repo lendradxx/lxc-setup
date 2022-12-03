@@ -78,9 +78,7 @@ function FedoraInstall() {
     dnf -v update -y && dnf -v install ncurses bash-completion sudo dnf-plugins-core openssh-server -y
     CreateLoginUser
     echo "[LOG]: Enabling ssh remote && firewall..."
-    sudo systemctl enable --now sshd && sudo systemctl enable --now firewalld
-    echo "[LOG]: Enabling firewall for server..."
-    sudo firewall-cmd --set-default-zone=FedoraServer
+    sudo systemctl enable --now sshd
 }
 
 function ArchInstall() {
