@@ -230,7 +230,7 @@ function AlmaLinuxInstall() {
     mv gai.conf /etc/
 
     echo "[LOG]: Updating and installing missing tools..."
-    yum update -y && yum install bash-completion sudo -y
+    yum update -y && yum install bash-completion ncurses sudo -y
     CreateLoginUser
     echo "[LOG]: Installing SSH Server..."
     yum install openssh-server -y
