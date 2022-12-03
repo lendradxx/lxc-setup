@@ -229,6 +229,11 @@ function AlmaLinuxInstall() {
     wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
     mv gai.conf /etc/
 
+    echo "[LOG]: Creating backup for dnf config"
+    mv /etc/dnf/dnf.conf /etc/dnf/dnf.conf.bck
+    echo "[LOG]: Generating new dnf config file..."
+    wget http://gogs.com/lendra/lxc-setup/raw/main/dnf.conf || curl -o dnf.conf http://gogs.com/lendra/lxc-setup/raw/main/dnf.conf
+    mv dnf.conf /etc/dnf/
     echo "[LOG]: Updating and installing missing tools..."
     yum update -y && yum install bash-completion ncurses sudo -y
     CreateLoginUser
