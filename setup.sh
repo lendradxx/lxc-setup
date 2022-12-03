@@ -75,12 +75,7 @@ function FedoraInstall() {
     wget http://gogs.com/lendra/lxc-setup/raw/main/dnf.conf || curl -o dnf.conf http://gogs.com/lendra/lxc-setup/raw/main/dnf.conf
     mv dnf.conf /etc/dnf/
     echo "[LOG]: Updating and installing missing tools..."
-    dnf -v update -y && dnf -v install ncurses bash-completion sudo dnf-plugins-core -y
-    echo "[LOG]: Installing dnf-plugins-core (required)..."
-    echo "[LOG]: Enabling rpm fusion..."
-    #sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
-    sudo dnf -v groupupdate core -y 
-    sudo dnf -v install openssh-server -y
+    dnf -v update -y && dnf -v install ncurses bash-completion sudo dnf-plugins-core openssh-server -y
     CreateLoginUser
     echo "[LOG]: Enabling ssh remote && firewall..."
     sudo systemctl enable --now sshd && sudo systemctl enable --now firewalld
@@ -266,6 +261,9 @@ case $ID in # Select methods install by distro ID
     CentOSInstall
     ;;
 "almalinux")
+    AlmaLinuxInstall
+    ;;
+"rocky")
     AlmaLinuxInstall
     ;;
 "opensuse-leap")
