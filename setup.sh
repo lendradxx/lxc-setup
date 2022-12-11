@@ -61,9 +61,6 @@ function InstallDocker() {
 # Install methods
 
 function FedoraInstall() {
-    echo "[LOG]: Prefering IPv4 instead of IPv6"
-    wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-    mv gai.conf /etc/
     cd /etc/yum.repos.d/
     sed -i 's|baseurl=https://muug.ca|#baseurl=https://muug.ca|g' /etc/yum.repos.d/fedora*
     sed -i 's|#metalink=https://mirrors.fedoraproject.org|metalink=https://mirrors.fedoraproject.org|g' /etc/yum.repos.d/fedora*
@@ -82,10 +79,6 @@ function FedoraInstall() {
 }
 
 function ArchInstall() {
-    echo "[LOG]: Prefering IPv4 instead of IPv6"
-    wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-    mv gai.conf /etc/
-
     echo "[LOG]: Creating ssh user..."
     useradd -mG wheel $USERNAME && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
     echo "[LOG]: Creating temporary mirror..."
@@ -119,10 +112,6 @@ function ArchInstall() {
 }
 
 function UbuntuInstall() {
-    echo "[LOG]: Prefering IPv4 instead of IPv6"
-    wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-    mv gai.conf /etc/
-
     echo "[LOG]: Creating backup for local repo..."
     echo -e "deb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME} main restricted universe multiverse\ndeb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME}-updates main restricted universe multiverse\ndeb http://kartolo.sby.datautama.net.id/ubuntu/ ${UBUNTU_CODENAME}-security main restricted universe multiverse" >/etc/apt/sources.list
     echo "[LOG]: Creating ssh user..."
@@ -136,10 +125,6 @@ function UbuntuInstall() {
 }
 
 function DebianInstall() {
-    echo "[LOG]: Prefering IPv4 instead of IPv6"
-    wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-    mv gai.conf /etc/
-
     echo "[LOG]: Creating ssh user..."
     groupadd wheel
     useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
@@ -152,9 +137,6 @@ function DebianInstall() {
 }
 
 function AlpineInstall() {
-    echo "[LOG]: Disabling IPv6"
-    echo -e "# Force IPv6 off\nnet.ipv6.conf.all.disable_ipv6 = 1\nnet.ipv6.conf.default.disable_ipv6 = 1\nnet.ipv6.conf.lo.disable_ipv6 = 1\nnet.ipv6.conf.eth0.disable_ipv6 = 1" >/etc/sysctl.conf
-    sysctl -p /etc/sysctl.conf
     echo "[LOG]: Updating system..."
     apk upgrade
     echo "[LOG]: Installing bash & sudo..."
@@ -171,10 +153,6 @@ function AlpineInstall() {
 }
 
 function CentOSInstall() {
-    echo "[LOG]: Prefering IPv4 instead of IPv6"
-    wget http://gogs.com/lendra/lxc-setup/raw/main/gai.conf || curl -o gai.conf http://gogs.com/lendra/lxc-setup/raw/main/gai.conf
-    mv gai.conf /etc/
-
     if (($VERSION_ID >= 8)); then
         if [[ "$PRETTY_NAME" =~ .*"Stream".* ]]; then
             echo "[LOG]: Using Distro CentOS Stream..."
