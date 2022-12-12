@@ -10,11 +10,12 @@ PASSWORD="lendev"
 
 # Function
 function CreateLoginUser {
-    echo "[LOG]: Creating ssh user..."
-    groupadd wheel
-    useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
-    echo "[LOG]: Adding wheel groups to sudoers"
-    echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
+    echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+    # echo "[LOG]: Creating ssh user..."
+    # groupadd wheel
+    # useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
+    # echo "[LOG]: Adding wheel groups to sudoers"
+    # echo -e "%wheel ALL=(ALL:ALL) ALL" >>/etc/sudoers
 }
 
 # Install Docker with distro ID
