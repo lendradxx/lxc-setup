@@ -124,9 +124,7 @@ function UbuntuInstall() {
 }
 
 function DebianInstall() {
-    echo "[LOG]: Creating ssh user..."
-    groupadd wheel
-    useradd -mG wheel $USERNAME -s $(which bash 2>/dev/null) && echo -e "$PASSWORD\n$PASSWORD" | passwd $USERNAME
+	CreateLoginUser
     echo "[LOG]: Updating system..."
     apt update && apt upgrade -y
     echo "[LOG]: Installing ssh if needed..."
